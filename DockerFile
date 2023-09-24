@@ -1,2 +1,11 @@
 ﻿FROM nginx:1.25.2
+COPY Certs/app.amrita-local.net.txt /etc/nginx/certs/app.amrita-local.net.txt
+COPY Certs/app.amrita-local.net.crt /etc/nginx/certs/app.amrita-local.net.crt
+COPY Certs/app.amrita-local.net.key /etc/nginx/certs/app.amrita-local.net.key
+
+
+COPY Certs/api.amrita-local.io.txt /etc/nginx/certs/api.amrita-local.io.txt
+COPY Certs/api.amrita-local.io.crt /etc/nginx/certs/api.amrita-local.io.crt
+COPY Certs/api.amrita-local.io.key /etc/nginx/certs/api.amrita-local.io.key
+
 COPY default.conf /etc/nginx/conf.d/default.conf

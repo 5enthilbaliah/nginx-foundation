@@ -2,14 +2,15 @@
 
 services:
   nginx-foundation:
-    image: project-chimera/nginx-amrita:0.0.3
+    image: project-chimera/nginx-amrita:0.0.5
     build:
       context: .
       dockerfile: DockerFile
     container_name: nginx-foundation
-    restart: unless-stopped
+    restart: "no"
     ports:
       - 80:80
+      - 443:443
     volumes:
       - vol-nginx-conf-data:/etc/nginx
     networks:

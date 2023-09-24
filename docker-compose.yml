@@ -2,7 +2,7 @@
 
 services:
   nginx-foundation:
-    image: project-chimera/nginx-amrita:0.0.5
+    image: project-chimera/nginx-amrita:0.0.6
     build:
       context: .
       dockerfile: DockerFile

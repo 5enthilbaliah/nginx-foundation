@@ -3,24 +3,32 @@
 # docker volume rm vol-nginx-conf-data
 # docker compose up -d
 
-FILE=/certs/app.amrita-local.net.crt
-if [ ! -f "$FILE" ]; then
-    printf Amr1t@N3t > Certs/app.amrita-local.net.txt
-    openssl genrsa -des3 -passout file:Certs/app.amrita-local.net.txt -out Certs/app.amrita-local.net.key 2048
-    openssl req -key Certs/app.amrita-local.net.key -passin file:Certs/app.amrita-local.net.txt -subj '/CN=amrita-local-app network applications/O=amrita-local/C=US/OU=amrita-private' -addext "subjectAltName = DNS:app.amrita-local.net" -new -out Certs/app.amrita-local.net.csr
-    openssl x509 -signkey Certs/app.amrita-local.net.key -in Certs/app.amrita-local.net.csr -passin file:Certs/app.amrita-local.net.txt -req -days 365 -out Certs/app.amrita-local.net.crt
-
+DIRECTORY=certs
+if [ -d "$DIRECTORY" ]; then
+  echo "$DIRECTORY does exist."
+else
+  mkdir "$DIRECTORY"
 fi
 
-FILE=/certs/api.amrita-local.io.crt
+FILE="$DIRECTORY"/amrita-local.net.crt
 if [ ! -f "$FILE" ]; then
-    printf Amr1t@I0 > Certs/api.amrita-local.io.txt
-    openssl genrsa -des3 -passout file:Certs/api.amrita-local.io.txt -out Certs/api.amrita-local.io.key 2048
-    openssl req -key Certs/api.amrita-local.io.key -passin file:Certs/api.amrita-local.io.txt -subj '/CN=amrita-local-api io/O=amrita-local/C=US/OU=amrita-private-api' -addext "subjectAltName = DNS:api.amrita-local.io" -new -out Certs/api.amrita-local.io.csr
-    openssl x509 -signkey Certs/api.amrita-local.io.key -in Certs/api.amrita-local.io.csr -passin file:Certs/api.amrita-local.io.txt -req -days 365 -out Certs/api.amrita-local.io.crt
+    openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
+      -nodes -keyout "$DIRECTORY"/amrita-local.net.key -out "$DIRECTORY"/amrita-local.net.crt -subj "/C=US/ST=TX/L=Frisco/O=Amrita/OU=Tech/CN=amrita-local.net" \
+      -addext "subjectAltName=DNS:amrita-local.net,DNS:*.amrita-local.net,IP:10.0.0.1"
 fi
 
-# openssl genrsa -des3 -out app.amrita-local.net.key 2048
+FILE="$DIRECTORY"/amrita-local.io.crt
+if [ ! -f "$FILE" ]; then
+    openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 \
+      -nodes -keyout "$DIRECTORY"/amrita-local.io.key -out "$DIRECTORY"/amrita-local.io.crt -subj "/C=US/ST=TX/L=Frisco/O=Amrita/OU=Tech/CN=amrita-local.io" \
+      -addext "subjectAltName=DNS:amrita-local.io,DNS:*.amrita-local.io,IP:10.0.0.1"
+fi
+
+
+
+
+
+
 
 
 
